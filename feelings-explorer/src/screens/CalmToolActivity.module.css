@@ -1,0 +1,170 @@
+@import '../styles/tokens.css';
+
+.screen {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.backButton {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  margin-bottom: var(--space-6);
+  transition: border-color var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.backButton:hover {
+  border-color: var(--color-selected);
+  color: var(--color-selected);
+}
+
+.backButton:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 2px;
+}
+
+.toolEmoji {
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+}
+
+.toolIllustration {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: var(--space-4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.toolTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-4);
+  line-height: 1.3;
+}
+
+.instruction {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--space-8);
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+/* Breathing guide */
+.breathingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.breathingCircle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-sky), var(--color-lavender));
+  box-shadow: var(--shadow-md);
+  animation: breathe 8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%   { transform: scale(0.6); opacity: 0.7; }
+  40%  { transform: scale(1.0); opacity: 1; }
+  50%  { transform: scale(1.0); opacity: 1; }
+  90%  { transform: scale(0.6); opacity: 0.7; }
+  100% { transform: scale(0.6); opacity: 0.7; }
+}
+
+.breathingLabel {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  animation: breatheLabel 8s ease-in-out infinite;
+}
+
+@keyframes breatheLabel {
+  0%   { content: ''; }
+  0%, 39%  { opacity: 1; }
+  40%, 50% { opacity: 0.5; }
+  51%, 100%{ opacity: 1; }
+}
+
+/* Non-breathing activity illustration */
+.activityIllustration {
+  font-size: 5rem;
+  margin-bottom: var(--space-6);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
+}
+
+/* Done button */
+.doneButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: var(--color-selected);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  margin-top: auto;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.doneButton:hover,
+.doneButton:focus-visible {
+  background-color: #6a3de8;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.doneButton:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 3px;
+}
+
+.doneButton:active {
+  transform: scale(0.98);
+}
+
+.notFound {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: var(--space-8);
+}

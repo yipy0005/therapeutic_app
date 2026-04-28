@@ -1,0 +1,120 @@
+:root {
+  /* Pastel palette */
+  --color-lavender: #e8d5f5;
+  --color-lavender-dark: #c9a8e8;
+  --color-peach: #fde8d8;
+  --color-peach-dark: #f5c4a0;
+  --color-sky: #d4eef9;
+  --color-sky-dark: #a8d8f0;
+  --color-mint: #d4f5e9;
+  --color-mint-dark: #a0e8cc;
+  --color-sunshine: #fff3cc;
+  --color-sunshine-dark: #ffe080;
+  --color-rose: #fde0e8;
+  --color-rose-dark: #f5b0c4;
+  --color-amber: #fff0d4;
+  --color-amber-dark: #ffd98a;
+
+  /* Neutral / background */
+  --color-bg: #fafaf8;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f5f3f0;
+  --color-border: #e8e4de;
+
+  /* Text */
+  --color-text-primary: #2d2a26;
+  --color-text-secondary: #6b6560;
+  --color-text-muted: #9e9890;
+
+  /* Semantic */
+  --color-parent-bg: #fff8e8;
+  --color-parent-border: #f5d080;
+  --color-selected: #7c4dff;
+  --color-selected-light: #ede7ff;
+  --color-success: #2e7d52;
+  --color-success-light: #d4f5e9;
+
+  /* Weather metaphor colours */
+  --color-sunny: #fff3cc;
+  --color-rainy: #d4eef9;
+  --color-stormy: #e8d5f5;
+  --color-foggy: #f0f0f0;
+  --color-windy: #d4f5e9;
+  --color-sparkly: #fde8d8;
+  --color-heavy-clouds: #e0e0e8;
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Typography */
+  --font-family: 'Nunito', 'Rounded Mplus 1c', system-ui, -apple-system, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Minimum touch target */
+  --touch-target: 44px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Max content width */
+  --max-width: 480px;
+  --max-width-wide: 768px;
+}
+
+/* Base reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  height: 100%;
+}

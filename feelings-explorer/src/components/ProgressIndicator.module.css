@@ -1,0 +1,35 @@
+@import '../styles/tokens.css';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4) 0;
+}
+
+.dot {
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+  transition: background-color var(--transition-base), width var(--transition-base), height var(--transition-base);
+  flex-shrink: 0;
+}
+
+.dot.completed {
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-selected);
+}
+
+.dot.active {
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-selected);
+  box-shadow: 0 0 0 3px var(--color-selected-light);
+}
+
+.dot.future {
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-border);
+}

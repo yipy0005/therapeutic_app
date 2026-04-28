@@ -1,0 +1,178 @@
+@import '../styles/tokens.css';
+
+.screen {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.prompt {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-6);
+  line-height: 1.3;
+}
+
+/* Scale illustration */
+.scaleImg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: var(--space-4);
+}
+
+/* Intensity levels list */
+.levelList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+
+.levelButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-family);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+.levelButton:hover:not(:disabled) {
+  border-color: var(--color-selected);
+  background-color: var(--color-selected-light);
+  transform: translateY(-1px);
+}
+
+.levelButton:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 2px;
+}
+
+.levelButton:active {
+  transform: scale(0.98);
+}
+
+.levelButton.selected {
+  border-color: var(--color-selected);
+  background-color: var(--color-selected-light);
+  box-shadow: var(--shadow-md);
+}
+
+/* Volcano image — scales with level */
+.volcanoImg {
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.volcanoImg[data-level="1"] { width: 36px; height: 36px; }
+.volcanoImg[data-level="2"] { width: 44px; height: 44px; }
+.volcanoImg[data-level="3"] { width: 52px; height: 52px; }
+.volcanoImg[data-level="4"] { width: 60px; height: 60px; }
+.volcanoImg[data-level="5"] { width: 68px; height: 68px; }
+
+.levelInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.levelNumber {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.levelLabel {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.levelButton.selected .levelLabel {
+  color: var(--color-selected);
+}
+
+/* Guidance message for level >= 4 */
+.guidanceMessage {
+  width: 100%;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-amber);
+  border: 2px solid var(--color-amber-dark);
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+/* Parent script panel placeholder */
+.parentScriptPanel {
+  width: 100%;
+  margin-bottom: var(--space-4);
+}
+
+/* Next button */
+.nextButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: var(--color-selected);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), opacity var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  margin-top: auto;
+}
+
+.nextButton:hover:not(:disabled),
+.nextButton:focus-visible:not(:disabled) {
+  background-color: #6a3de8;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.nextButton:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 3px;
+}
+
+.nextButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.nextButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

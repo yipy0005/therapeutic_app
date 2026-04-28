@@ -1,0 +1,147 @@
+@import '../styles/tokens.css';
+
+.screen {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, var(--color-sunshine) 0%, var(--color-lavender) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-8) var(--space-4) var(--space-10);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header */
+.heading {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-2);
+  line-height: 1.2;
+}
+
+.subheading {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+/* Badge list */
+.badgeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  margin-bottom: var(--space-8);
+  list-style: none;
+  padding: 0;
+}
+
+/* Individual badge tile */
+.tile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: var(--shadow-md);
+}
+
+.tileImg {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.tileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.tileName {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.tileDescription {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+/* Empty state */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-6);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.emptyEmoji {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.emptyText {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Actions */
+.actions {
+  width: 100%;
+  margin-top: auto;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-selected);
+  background-color: transparent;
+  color: var(--color-selected);
+  font-family: var(--font-family);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background-color: var(--color-selected-light);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.backButton:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 3px;
+}
+
+.backButton:active {
+  transform: scale(0.98);
+}

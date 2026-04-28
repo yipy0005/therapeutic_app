@@ -1,0 +1,160 @@
+@import '../styles/tokens.css';
+
+.screen {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Heading */
+.heading {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+
+.subheading {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+/* Tile grid */
+.tileGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 88px;
+  min-width: var(--touch-target);
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.tile:hover {
+  border-color: var(--color-selected);
+  background-color: var(--color-selected-light);
+  transform: translateY(-1px);
+}
+
+.tile:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 2px;
+}
+
+.tile:active {
+  transform: scale(0.97);
+}
+
+.tile.selected {
+  border-color: var(--color-selected);
+  background-color: var(--color-selected-light);
+  box-shadow: var(--shadow-md);
+}
+
+.tileEmoji {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.tileLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.tile.selected .tileLabel {
+  color: var(--color-selected);
+}
+
+/* Encouragement message */
+.encouragement {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-success);
+  text-align: center;
+  background-color: var(--color-success-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  width: 100%;
+  margin-bottom: var(--space-4);
+  line-height: 1.4;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: auto;
+}
+
+.doneButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: var(--color-selected);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.doneButton:hover:not(:disabled),
+.doneButton:focus-visible:not(:disabled) {
+  background-color: #6a3de8;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.doneButton:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 3px;
+}
+
+.doneButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.doneButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

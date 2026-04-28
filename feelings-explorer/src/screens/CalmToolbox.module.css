@@ -1,0 +1,157 @@
+@import '../styles/tokens.css';
+
+.screen {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.prompt {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+/* Tool card grid */
+.toolGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+
+.toolCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  min-height: 110px;
+  min-width: var(--touch-target);
+  padding: var(--space-4) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.toolCard:hover:not(:disabled) {
+  border-color: var(--color-selected);
+  background-color: var(--color-selected-light);
+  transform: translateY(-1px);
+}
+
+.toolCard:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 2px;
+}
+
+.toolCard:active {
+  transform: scale(0.97);
+}
+
+.toolCard.used {
+  border-color: var(--color-success);
+  background-color: var(--color-success-light);
+}
+
+.toolImg {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.toolLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.toolCard.used .toolLabel {
+  color: var(--color-success);
+}
+
+.toolInstruction {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.3;
+}
+
+.usedBadge {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-success);
+  margin-top: var(--space-1);
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: auto;
+}
+
+.feelBetterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: var(--color-success);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), opacity var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.feelBetterButton:hover:not(:disabled),
+.feelBetterButton:focus-visible:not(:disabled) {
+  background-color: #1e6b40;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.feelBetterButton:focus-visible {
+  outline: 3px solid var(--color-success);
+  outline-offset: 3px;
+}
+
+.feelBetterButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.feelBetterButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

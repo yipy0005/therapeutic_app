@@ -1,0 +1,144 @@
+@import '../styles/tokens.css';
+
+.screen {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.prompt {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-6);
+  line-height: 1.3;
+}
+
+.svgWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: var(--space-6);
+}
+
+.bodyMapContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bodyMapImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bodySvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Body region hit areas */
+.region {
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.region:focus-visible .hitArea {
+  stroke: var(--color-selected);
+  stroke-width: 3;
+}
+
+/* Silhouette fill — hidden since body image provides the visual */
+.silhouette {
+  fill: transparent;
+  stroke: none;
+}
+
+/* Selected state — show a highlight on the hit area */
+.selected .silhouette {
+  fill: rgba(255, 60, 60, 0.18);
+  stroke: rgba(255, 60, 60, 0.85);
+  stroke-width: 6;
+}
+
+/* Transparent hit area for touch target */
+.hitArea {
+  fill: transparent;
+  stroke: none;
+}
+
+/* Region label — sits to the right of the body */
+.regionLabel {
+  font-family: var(--font-family);
+  font-size: 52px;
+  font-weight: var(--font-weight-bold);
+  fill: var(--color-text-secondary);
+  text-anchor: start;
+  pointer-events: none;
+  user-select: none;
+}
+
+.selected .regionLabel {
+  fill: var(--color-selected);
+}
+
+/* Next button */
+.nextButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: var(--color-selected);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), opacity var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nextButton:hover:not(:disabled),
+.nextButton:focus-visible:not(:disabled) {
+  background-color: #6a3de8;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.nextButton:focus-visible {
+  outline: 3px solid var(--color-selected);
+  outline-offset: 3px;
+}
+
+.nextButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.nextButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
