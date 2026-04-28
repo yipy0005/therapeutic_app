@@ -17,11 +17,15 @@ export type SessionStep =
   | 'body-map'
   | 'intensity'
   | 'name-it'
+  | 'share'           // positive flow: celebrate + share what caused the feeling
   | 'calm-toolbox'
   | 'calm-activity'
   | 'reflection'
   | 'problem-solving'
   | 'badge-screen';
+
+// Whether the selected emotion is positive or negative
+export type EmotionValence = 'positive' | 'negative';
 
 // Skill-based badge types
 export type BadgeType =
@@ -38,6 +42,7 @@ export interface SessionState {
   bodyRegions: BodyRegion[];
   intensityLevel: 1 | 2 | 3 | 4 | 5 | null;
   selectedEmotion: string | null;
+  emotionValence: EmotionValence | null;
   calmToolsUsed: string[];
   reflectionResponses: Record<number, string[]>;
   nextStep: string | null;

@@ -7,6 +7,7 @@ import { HomeScreen } from './screens/HomeScreen';
 import { BodyMap } from './screens/BodyMap';
 import { IntensityScale } from './screens/IntensityScale';
 import { NameIt } from './screens/NameIt';
+import { Share } from './screens/Share';
 import { CalmToolbox } from './screens/CalmToolbox';
 import { CalmToolActivity } from './screens/CalmToolActivity';
 import { Reflection } from './screens/Reflection';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/body-map" element={<BodyMap />} />
             <Route path="/intensity" element={<IntensityScale />} />
             <Route path="/name-it" element={<NameIt />} />
+            <Route path="/share" element={<Share />} />
             <Route path="/calm-toolbox" element={<CalmToolbox />} />
             <Route path="/calm-activity/:toolId" element={<CalmToolActivity />} />
             <Route path="/reflection" element={<Reflection />} />

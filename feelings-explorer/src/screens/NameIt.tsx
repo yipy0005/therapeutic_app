@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
-import { WEATHER_EMOTION_MAP } from '../data/index';
+import { WEATHER_EMOTION_MAP, POSITIVE_WEATHER } from '../data/index';
 import { ParentScriptPanel } from '../components/ParentScriptPanel';
 import { BackButton } from '../components/BackButton';
 import { ProgressIndicator } from '../components/ProgressIndicator';
@@ -77,9 +77,10 @@ export function NameIt() {
   };
 
   const handleNext = () => {
-    if (!selectedEmotion) return;
-    dispatch({ type: 'SET_EMOTION', payload: selectedEmotion });
-    navigate('/calm-toolbox');
+    if (!selectedEmotion || !weather) return;
+    const valence = POSITIVE_WEATHER.has(weather) ? 'positive' : 'negative';
+    dispatch({ type: 'SET_EMOTION', payload: { emotion: selectedEmotion, valence } });
+    navigate(valence === 'positive' ? '/share' : '/calm-toolbox');
   };
 
   return (

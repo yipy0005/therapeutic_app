@@ -20,8 +20,98 @@ export const WEATHER_EMOTION_MAP: Record<WeatherMetaphor, string[]> = {
 };
 
 // ---------------------------------------------------------------------------
-// Parent coaching scripts
+// Positive vs negative weather metaphors
 // ---------------------------------------------------------------------------
+export const POSITIVE_WEATHER = new Set<WeatherMetaphor>(['sunny', 'sparkly']);
+
+// ---------------------------------------------------------------------------
+// Reflection prompts — negative flow (after calm toolbox)
+// ---------------------------------------------------------------------------
+export const NEGATIVE_REFLECTION_PROMPTS = [
+  {
+    question: 'What happened?',
+    options: [
+      { emoji: '😤', label: 'We argued' },
+      { emoji: '😢', label: 'I got hurt' },
+      { emoji: '😕', label: 'Something felt unfair' },
+      { emoji: '😰', label: 'I got scared' },
+      { emoji: '😔', label: 'I felt left out' },
+      { emoji: '🤷', label: "I don't know" },
+    ],
+  },
+  {
+    question: 'What did you feel in your body?',
+    options: [
+      { emoji: '💓', label: 'Heart beating fast' },
+      { emoji: '🥵', label: 'Face felt hot' },
+      { emoji: '😤', label: 'Tight chest' },
+      { emoji: '🤢', label: 'Tummy felt funny' },
+      { emoji: '😬', label: 'Muscles felt tense' },
+      { emoji: '😶', label: 'Felt frozen' },
+    ],
+  },
+  {
+    question: 'What did your body want to do?',
+    options: [
+      { emoji: '🏃', label: 'Run away' },
+      { emoji: '🤜', label: 'Hit something' },
+      { emoji: '🙈', label: 'Hide' },
+      { emoji: '😭', label: 'Cry' },
+      { emoji: '🤐', label: 'Go quiet' },
+      { emoji: '🤗', label: 'Get a hug' },
+    ],
+  },
+  {
+    question: 'What can we try next time?',
+    options: [
+      { emoji: '🗣️', label: 'Use words' },
+      { emoji: '🧘', label: 'Take a breath' },
+      { emoji: '🙋', label: 'Ask for help' },
+      { emoji: '⏸️', label: 'Take a break' },
+      { emoji: '🤝', label: 'Talk it out' },
+      { emoji: '💪', label: 'Try again' },
+    ],
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Share prompts — positive flow (after name-it, instead of calm toolbox)
+// ---------------------------------------------------------------------------
+export const POSITIVE_SHARE_PROMPTS = [
+  {
+    question: 'What made you feel this way?',
+    options: [
+      { emoji: '👨‍👩‍👧', label: 'Time with family' },
+      { emoji: '👫', label: 'Playing with friends' },
+      { emoji: '🏆', label: 'I did something great' },
+      { emoji: '🎁', label: 'Something nice happened' },
+      { emoji: '🌈', label: 'Just a good day' },
+      { emoji: '🤷', label: "I don't know" },
+    ],
+  },
+  {
+    question: 'Who was there with you?',
+    options: [
+      { emoji: '👨‍👩‍👧', label: 'My family' },
+      { emoji: '👫', label: 'My friends' },
+      { emoji: '🧑‍🏫', label: 'My teacher' },
+      { emoji: '🐾', label: 'My pet' },
+      { emoji: '🙋', label: 'Just me' },
+      { emoji: '🤷', label: "I don't remember" },
+    ],
+  },
+  {
+    question: 'How does your body feel right now?',
+    options: [
+      { emoji: '⚡', label: 'Full of energy' },
+      { emoji: '😊', label: 'Warm and cosy' },
+      { emoji: '🦋', label: 'Fluttery inside' },
+      { emoji: '😌', label: 'Calm and relaxed' },
+      { emoji: '🤩', label: 'Buzzing with excitement' },
+      { emoji: '💪', label: 'Strong and proud' },
+    ],
+  },
+];
 export const PARENT_SCRIPTS: Record<WeatherMetaphor, string> = {
   stormy: "You're really angry. I won't let you hit, but I will help you.",
   rainy: "That felt really disappointing. I'm here with you.",
