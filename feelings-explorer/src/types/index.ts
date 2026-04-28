@@ -89,17 +89,5 @@ export interface StoredData {
   version: 1;
   currentSession: SessionState | null;
   badgeCollection: BadgeType[];
-  eveningCheckIns: EveningCheckInRecord[];
   emotionHistory: EmotionHistoryRecord[];
-}
-
-// A single evening check-in record
-export interface EveningCheckInRecord {
-  date: string; // ISO date string YYYY-MM-DD
-  responses: {
-    feeling: string | null;
-    intensity: number | null;
-    whatHelped: string | null;
-    proudOf: string | null;
-  };
 }

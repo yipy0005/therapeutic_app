@@ -14,7 +14,6 @@ import { Reflection } from './screens/Reflection';
 import { ProblemSolving } from './screens/ProblemSolving';
 import { BadgeScreen } from './screens/BadgeScreen';
 import { BadgeCollection } from './screens/BadgeCollection';
-import { EveningCheckIn } from './screens/EveningCheckIn';
 import { ParentSafetySection } from './screens/ParentSafetySection';
 
 // ---------------------------------------------------------------------------
@@ -28,7 +27,6 @@ function App() {
         <Routes>
           {/* Top-level screens */}
           <Route path="/" element={<HomeScreen />} />
-          <Route path="/evening-check-in" element={<EveningCheckIn />} />
           <Route path="/badge-collection" element={<BadgeCollection />} />
           <Route path="/parent-safety" element={<ParentSafetySection />} />
 

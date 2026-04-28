@@ -47,7 +47,6 @@ function seedSunnySession() {
       currentStep: 'name-it',
     },
     badgeCollection: [],
-    eveningCheckIns: [],
   });
 }
 

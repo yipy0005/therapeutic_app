@@ -54,7 +54,6 @@ function seedSession(overrides: Partial<SessionState> = {}) {
     version: 1,
     currentSession: baseSession(overrides),
     badgeCollection: [],
-    eveningCheckIns: [],
   });
 }
 

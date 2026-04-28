@@ -98,9 +98,6 @@ export function HomeScreen() {
       </div>
 
       <nav className={styles.nav} aria-label="Other sections">
-        <a href="#/evening-check-in" className={styles.navButton}>
-          🌙 Evening Check-In
-        </a>
         <a href="#/badge-collection" className={styles.navButton}>
           🏅 My Badges
         </a>

@@ -56,19 +56,7 @@ const storedDataArb: fc.Arbitrary<StoredData> = fc.record({
   version: fc.constant(1 as const),
   currentSession: fc.oneof(fc.constant(null), sessionStateArb),
   badgeCollection: fc.array(badgeTypeArb, { maxLength: 6 }),
-  eveningCheckIns: fc.array(
-    fc.record({
-      date: fc.date({ min: new Date('2020-01-01'), max: new Date('2030-12-31') })
-        .map(d => d.toISOString().slice(0, 10)),
-      responses: fc.record({
-        feeling: fc.oneof(fc.constant(null), fc.string({ minLength: 1, maxLength: 50 })),
-        intensity: fc.oneof(fc.constant(null), fc.integer({ min: 1, max: 5 })),
-        whatHelped: fc.oneof(fc.constant(null), fc.string({ minLength: 1, maxLength: 100 })),
-        proudOf: fc.oneof(fc.constant(null), fc.string({ minLength: 1, maxLength: 100 })),
-      }),
-    }),
-    { maxLength: 10 }
-  ),
+  emotionHistory: fc.constant([] as StoredData['emotionHistory']),
 });
 
 // ---------------------------------------------------------------------------

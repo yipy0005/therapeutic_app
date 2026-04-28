@@ -18,7 +18,6 @@ export const INITIAL_DATA: StoredData = {
   version: 1,
   currentSession: null,
   badgeCollection: [] as BadgeType[],
-  eveningCheckIns: [],
   emotionHistory: [],
 };
 
