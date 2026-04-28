@@ -132,7 +132,7 @@ export const INTENSITY_LABELS: Record<number, string> = {
   2: 'Growing feeling',
   3: 'Big feeling',
   4: 'Too big',
-  5: 'Eruption / meltdown',
+  5: 'Eruption',
 };
 
 // ---------------------------------------------------------------------------

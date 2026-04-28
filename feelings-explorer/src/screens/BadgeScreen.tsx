@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
 import { useBadge } from '../context/BadgeContext';
 import { evaluateBadges, mergeBadges } from '../utils/badges';
+import { saveEmotionRecord } from '../storage/adapter';
 import type { BadgeType } from '../types';
 import { ProgressIndicator } from '../components/ProgressIndicator';
 import styles from './BadgeScreen.module.css';
@@ -49,6 +50,23 @@ export function BadgeScreen() {
         badgeDispatch({ type: 'EARN_BADGE', payload: badge });
       }
     });
+
+    // Save this session to emotion history
+    if (sessionState.weatherMetaphor && sessionState.selectedEmotion && sessionState.intensityLevel) {
+      const now = new Date();
+      saveEmotionRecord({
+        id: now.getTime().toString(),
+        date: now.toISOString().slice(0, 10),
+        time: now.toTimeString().slice(0, 5),
+        weather: sessionState.weatherMetaphor,
+        emotion: sessionState.selectedEmotion,
+        valence: sessionState.emotionValence ?? 'negative',
+        intensity: sessionState.intensityLevel,
+        bodyRegions: sessionState.bodyRegions,
+        calmToolsUsed: sessionState.calmToolsUsed,
+        nextStep: sessionState.nextStep,
+      });
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

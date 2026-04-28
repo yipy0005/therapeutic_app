@@ -1,4 +1,4 @@
-import type { StoredData, BadgeType, SessionState } from '../types';
+import type { StoredData, BadgeType, SessionState, EmotionHistoryRecord } from '../types';
 
 const STORAGE_KEY = 'feelings-explorer';
 
@@ -7,6 +7,7 @@ const INITIAL_SESSION: SessionState = {
   bodyRegions: [],
   intensityLevel: null,
   selectedEmotion: null,
+  emotionValence: null,
   calmToolsUsed: [],
   reflectionResponses: {},
   nextStep: null,
@@ -18,6 +19,7 @@ export const INITIAL_DATA: StoredData = {
   currentSession: null,
   badgeCollection: [] as BadgeType[],
   eveningCheckIns: [],
+  emotionHistory: [],
 };
 
 // In-memory fallback used when localStorage is unavailable
@@ -104,4 +106,12 @@ export function clearData(): void {
 export function _resetFallbackState(): void {
   useInMemory = false;
   inMemoryData = { ...INITIAL_DATA };
+}
+
+/** Append a completed session to emotion history (max 90 records) */
+export function saveEmotionRecord(record: EmotionHistoryRecord): void {
+  const data = loadData();
+  const history = data.emotionHistory ?? [];
+  const updated = [record, ...history].slice(0, 90);
+  saveData({ ...data, emotionHistory: updated });
 }

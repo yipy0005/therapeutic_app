@@ -61,7 +61,7 @@ describe('IntensityScale', () => {
     expect(screen.getByText('Growing feeling')).toBeInTheDocument();
     expect(screen.getByText('Big feeling')).toBeInTheDocument();
     expect(screen.getByText('Too big')).toBeInTheDocument();
-    expect(screen.getByText('Eruption / meltdown')).toBeInTheDocument();
+    expect(screen.getByText('Eruption')).toBeInTheDocument();
   });
 
   it('Next button is disabled until a level is selected', async () => {

@@ -70,12 +70,27 @@ export interface EmotionWord {
   family: WeatherMetaphor;
 }
 
+// A single completed session saved to history
+export interface EmotionHistoryRecord {
+  id: string;           // timestamp-based unique id
+  date: string;         // ISO date string YYYY-MM-DD
+  time: string;         // HH:MM
+  weather: WeatherMetaphor;
+  emotion: string;
+  valence: EmotionValence;
+  intensity: 1 | 2 | 3 | 4 | 5;
+  bodyRegions: BodyRegion[];
+  calmToolsUsed: string[];
+  nextStep: string | null;
+}
+
 // Top-level localStorage schema
 export interface StoredData {
   version: 1;
   currentSession: SessionState | null;
   badgeCollection: BadgeType[];
   eveningCheckIns: EveningCheckInRecord[];
+  emotionHistory: EmotionHistoryRecord[];
 }
 
 // A single evening check-in record

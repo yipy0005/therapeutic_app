@@ -25,7 +25,7 @@ const INTENSITY_OPTIONS = [
   { level: 2, emoji: '🌋',   label: 'Growing feeling' },
   { level: 3, emoji: '🌋',   label: 'Big feeling' },
   { level: 4, emoji: '🌋💨', label: 'Too big' },
-  { level: 5, emoji: '🌋💥', label: 'Eruption / meltdown' },
+  { level: 5, emoji: '🌋💥', label: 'Eruption' },
 ];
 
 // ---------------------------------------------------------------------------
