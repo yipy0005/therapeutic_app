@@ -1,4 +1,4 @@
-import type { BadgeType, BadgeState, SessionState } from '../types';
+import type { BadgeType, SessionState } from '../types';
 import { BADGE_CONDITIONS, ALL_BADGE_TYPES } from '../data';
 
 /**
