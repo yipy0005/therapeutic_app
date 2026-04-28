@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
-import { INTENSITY_LABELS } from '../data/index';
+import { INTENSITY_LABELS, POSITIVE_WEATHER } from '../data/index';
 import { ParentScriptPanel } from '../components/ParentScriptPanel';
 import { BackButton } from '../components/BackButton';
 import { ProgressIndicator } from '../components/ProgressIndicator';
@@ -55,6 +55,8 @@ export function IntensityScale() {
     navigate('/name-it');
   };
 
+  const isPositive = sessionState.weatherMetaphor !== null &&
+    POSITIVE_WEATHER.has(sessionState.weatherMetaphor);
   const showGuidance = selectedLevel !== null && shouldShowIntensityGuidance(selectedLevel);
 
   return (
@@ -100,12 +102,13 @@ export function IntensityScale() {
 
       {showGuidance && (
         <p className={styles.guidanceMessage}>
-          Your feeling is a {selectedLevel}. That means we don&apos;t need to solve the problem
-          yet. First, we help your body feel safe.
+          {isPositive
+            ? `Wow, a ${selectedLevel}! That's a really big happy feeling — your body is full of it! 🌟`
+            : `Your feeling is a ${selectedLevel}. That\u2019s okay — first, let\u2019s help your body feel safe.`}
         </p>
       )}
 
-      {showGuidance && (
+      {showGuidance && !isPositive && (
         <div className={styles.parentScriptPanel}>
           <ParentScriptPanel weather={sessionState.weatherMetaphor ?? undefined} />
         </div>
