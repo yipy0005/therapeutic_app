@@ -1,6 +1,15 @@
-import type { StoredData, BadgeType, SessionState, EmotionHistoryRecord } from '../types';
+import type { StoredData, BadgeType, SessionState, EmotionHistoryRecord, ProfileRegistry, Profile } from '../types';
 
-const STORAGE_KEY = 'feelings-explorer';
+const STORAGE_PREFIX = 'feelings-explorer';
+const REGISTRY_KEY = 'feelings-explorer-profiles';
+
+// Active profile id — set by ProfileContext
+let activeProfileId: string | null = null;
+
+function getStorageKey(): string {
+  if (!activeProfileId) return STORAGE_PREFIX;
+  return `${STORAGE_PREFIX}-${activeProfileId}`;
+}
 
 const INITIAL_SESSION: SessionState = {
   weatherMetaphor: null,
@@ -36,37 +45,65 @@ export function isStorageAvailable(): boolean {
   }
 }
 
-export function loadData(): StoredData {
-  if (useInMemory) {
-    return inMemoryData;
+// ---------------------------------------------------------------------------
+// Profile registry (stored separately)
+// ---------------------------------------------------------------------------
+const INITIAL_REGISTRY: ProfileRegistry = { profiles: [], activeProfileId: null };
+
+export function loadRegistry(): ProfileRegistry {
+  if (useInMemory) return { ...INITIAL_REGISTRY };
+  try {
+    const raw = localStorage.getItem(REGISTRY_KEY);
+    if (!raw) return { ...INITIAL_REGISTRY };
+    return JSON.parse(raw) as ProfileRegistry;
+  } catch {
+    return { ...INITIAL_REGISTRY };
   }
+}
+
+export function saveRegistry(registry: ProfileRegistry): void {
+  if (useInMemory) return;
+  try {
+    localStorage.setItem(REGISTRY_KEY, JSON.stringify(registry));
+  } catch {
+    // silent fail
+  }
+}
+
+export function setActiveProfile(profileId: string | null): void {
+  activeProfileId = profileId;
+  // Also persist to registry
+  const reg = loadRegistry();
+  reg.activeProfileId = profileId;
+  saveRegistry(reg);
+}
+
+export function getActiveProfileId(): string | null {
+  return activeProfileId;
+}
+
+// ---------------------------------------------------------------------------
+// Per-profile data
+// ---------------------------------------------------------------------------
+export function loadData(): StoredData {
+  if (useInMemory) return inMemoryData;
 
   let raw: string | null;
   try {
-    raw = localStorage.getItem(STORAGE_KEY);
+    raw = localStorage.getItem(getStorageKey());
   } catch (err) {
     console.warn('[feelings-explorer] localStorage unavailable, falling back to in-memory.', err);
     useInMemory = true;
     return inMemoryData;
   }
 
-  if (raw === null) {
-    return { ...INITIAL_DATA };
-  }
+  if (raw === null) return { ...INITIAL_DATA };
 
   try {
     const parsed = JSON.parse(raw) as StoredData;
-
-    // Validate schema version
-    if (parsed.version !== 1) {
-      console.warn('[feelings-explorer] Invalid schema version, resetting to clean state.');
-      return { ...INITIAL_DATA };
-    }
-
+    if (parsed.version !== 1) return { ...INITIAL_DATA };
     return parsed;
-  } catch (err) {
-    // Corrupted JSON — reset to clean state but keep storage available
-    console.warn('[feelings-explorer] Corrupted localStorage data, resetting to clean state.', err);
+  } catch {
     return { ...INITIAL_DATA };
   }
 }
@@ -76,9 +113,8 @@ export function saveData(data: StoredData): void {
     inMemoryData = data;
     return;
   }
-
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    localStorage.setItem(getStorageKey(), JSON.stringify(data));
   } catch (err) {
     console.warn('[feelings-explorer] localStorage write failed, falling back to in-memory.', err);
     useInMemory = true;
@@ -91,9 +127,8 @@ export function clearData(): void {
     inMemoryData = { ...INITIAL_DATA };
     return;
   }
-
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(getStorageKey());
   } catch (err) {
     console.warn('[feelings-explorer] localStorage clear failed, resetting in-memory.', err);
     useInMemory = true;
@@ -101,9 +136,43 @@ export function clearData(): void {
   }
 }
 
+/** Load data for a specific profile (used by parent dashboard) */
+export function loadDataForProfile(profileId: string): StoredData {
+  if (useInMemory) return { ...INITIAL_DATA };
+  try {
+    const raw = localStorage.getItem(`${STORAGE_PREFIX}-${profileId}`);
+    if (!raw) return { ...INITIAL_DATA };
+    const parsed = JSON.parse(raw) as StoredData;
+    if (parsed.version !== 1) return { ...INITIAL_DATA };
+    return parsed;
+  } catch {
+    return { ...INITIAL_DATA };
+  }
+}
+
+/** Clear data for a specific profile */
+export function clearDataForProfile(profileId: string): void {
+  if (useInMemory) return;
+  try {
+    localStorage.removeItem(`${STORAGE_PREFIX}-${profileId}`);
+  } catch {
+    // silent fail
+  }
+}
+
+/** Delete a profile entirely (registry + data) */
+export function deleteProfile(profileId: string): void {
+  clearDataForProfile(profileId);
+  const reg = loadRegistry();
+  reg.profiles = reg.profiles.filter((p) => p.id !== profileId);
+  if (reg.activeProfileId === profileId) reg.activeProfileId = null;
+  saveRegistry(reg);
+}
+
 /** Reset the in-memory fallback flag (useful for testing) */
 export function _resetFallbackState(): void {
   useInMemory = false;
+  activeProfileId = null;
   inMemoryData = { ...INITIAL_DATA };
 }
 

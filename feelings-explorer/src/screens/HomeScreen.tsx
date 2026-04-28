@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
+import { useProfile } from '../context/ProfileContext';
 import type { WeatherMetaphor } from '../types';
 import { SpeakerButton } from '../components/SpeakerButton';
 import styles from './HomeScreen.module.css';
@@ -74,6 +75,7 @@ function WeatherCard({ option, onSelect }: WeatherCardProps) {
 // ---------------------------------------------------------------------------
 export function HomeScreen() {
   const { dispatch } = useSession();
+  const { activeProfile } = useProfile();
   const navigate = useNavigate();
 
   const handleWeatherSelect = (weather: WeatherMetaphor) => {
@@ -86,6 +88,13 @@ export function HomeScreen() {
       <div className={styles.logoRow}>
         <img src={appLogoSrc} alt="Feelings Explorer" className={styles.logo} />
       </div>
+
+      {activeProfile && (
+        <p className={styles.greeting}>
+          Hi {activeProfile.emoji} {activeProfile.name}!
+        </p>
+      )}
+
       <h1 className={styles.prompt}>
         How is your weather today?
         <SpeakerButton text="How is your weather today?" />
@@ -103,6 +112,9 @@ export function HomeScreen() {
         </a>
         <a href="#/parent-safety" className={styles.navButton}>
           👋 For Grown-Ups
+        </a>
+        <a href="#/profiles" className={styles.navButton}>
+          🔄 Switch Explorer
         </a>
       </nav>
     </main>

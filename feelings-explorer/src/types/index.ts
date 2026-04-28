@@ -84,10 +84,24 @@ export interface EmotionHistoryRecord {
   nextStep: string | null;
 }
 
-// Top-level localStorage schema
+// Top-level localStorage schema (per-profile)
 export interface StoredData {
   version: 1;
   currentSession: SessionState | null;
   badgeCollection: BadgeType[];
   emotionHistory: EmotionHistoryRecord[];
+}
+
+// A child profile
+export interface Profile {
+  id: string;
+  name: string;
+  emoji: string;
+  createdAt: string;    // ISO date string
+}
+
+// Top-level registry stored separately from profile data
+export interface ProfileRegistry {
+  profiles: Profile[];
+  activeProfileId: string | null;
 }

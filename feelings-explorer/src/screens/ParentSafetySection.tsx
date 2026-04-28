@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../context/AppProvider';
-import { loadData } from '../storage/adapter';
-import type { EmotionHistoryRecord } from '../types';
+import { useProfile } from '../context/ProfileContext';
+import { loadDataForProfile, clearDataForProfile, deleteProfile as deleteProfileFromStorage } from '../storage/adapter';
+import type { EmotionHistoryRecord, Profile } from '../types';
 import styles from './ParentSafetySection.module.css';
 
 // ---------------------------------------------------------------------------
@@ -59,11 +59,48 @@ function AdultConfirmGate({ onConfirm, onBack }: { onConfirm: () => void; onBack
 }
 
 // ---------------------------------------------------------------------------
+// ProfileSelector — pick which child to view
+// ---------------------------------------------------------------------------
+function ProfileSelector({
+  profiles,
+  selectedId,
+  onSelect,
+}: {
+  profiles: Profile[];
+  selectedId: string | null;
+  onSelect: (id: string) => void;
+}) {
+  if (profiles.length === 0) {
+    return (
+      <div className={styles.emptyHistory}>
+        <span aria-hidden="true">👶</span>
+        <p>No profiles yet. Create a profile from the home screen to get started.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.profileSelector} role="radiogroup" aria-label="Select a child">
+      {profiles.map((p) => (
+        <button
+          key={p.id}
+          type="button"
+          role="radio"
+          aria-checked={selectedId === p.id}
+          className={`${styles.profileChip} ${selectedId === p.id ? styles.profileChipActive : ''}`}
+          onClick={() => onSelect(p.id)}
+        >
+          <span aria-hidden="true">{p.emoji}</span> {p.name}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // EmotionHistoryTab
 // ---------------------------------------------------------------------------
-function EmotionHistoryTab() {
-  const records: EmotionHistoryRecord[] = loadData().emotionHistory ?? [];
-
+function EmotionHistoryTab({ records }: { records: EmotionHistoryRecord[] }) {
   if (records.length === 0) {
     return (
       <div className={styles.emptyHistory}>
@@ -73,7 +110,6 @@ function EmotionHistoryTab() {
     );
   }
 
-  // Group by date
   const byDate: Record<string, EmotionHistoryRecord[]> = {};
   records.forEach((r) => {
     if (!byDate[r.date]) byDate[r.date] = [];
@@ -108,19 +144,13 @@ function EmotionHistoryTab() {
                 </span>
               </div>
               {r.bodyRegions.length > 0 && (
-                <p className={styles.historyDetail}>
-                  Body: {r.bodyRegions.join(', ')}
-                </p>
+                <p className={styles.historyDetail}>Body: {r.bodyRegions.join(', ')}</p>
               )}
               {r.calmToolsUsed.length > 0 && (
-                <p className={styles.historyDetail}>
-                  Calm tools: {r.calmToolsUsed.join(', ')}
-                </p>
+                <p className={styles.historyDetail}>Calm tools: {r.calmToolsUsed.join(', ')}</p>
               )}
               {r.nextStep && (
-                <p className={styles.historyDetail}>
-                  Next step: {r.nextStep}
-                </p>
+                <p className={styles.historyDetail}>Next step: {r.nextStep}</p>
               )}
             </div>
           ))}
@@ -143,7 +173,6 @@ interface DaySummary {
   weatherEmoji: string;
   positiveCount: number;
   negativeCount: number;
-  records: EmotionHistoryRecord[];
 }
 
 function buildDaySummaries(records: EmotionHistoryRecord[]): DaySummary[] {
@@ -156,31 +185,22 @@ function buildDaySummaries(records: EmotionHistoryRecord[]): DaySummary[] {
   return Object.entries(byDate)
     .sort(([a], [b]) => b.localeCompare(a))
     .map(([date, dayRecords]) => {
-      const avgIntensity =
-        dayRecords.reduce((sum, r) => sum + r.intensity, 0) / dayRecords.length;
+      const avgIntensity = dayRecords.reduce((sum, r) => sum + r.intensity, 0) / dayRecords.length;
 
-      // Most frequent emotion
       const emotionCounts: Record<string, number> = {};
       dayRecords.forEach((r) => {
-        r.emotions.forEach((e) => {
-          emotionCounts[e] = (emotionCounts[e] ?? 0) + 1;
-        });
+        r.emotions.forEach((e) => { emotionCounts[e] = (emotionCounts[e] ?? 0) + 1; });
       });
       const topEmotion = Object.entries(emotionCounts).sort((a, b) => b[1] - a[1])[0][0];
 
-      // Most frequent weather
       const weatherCounts: Record<string, number> = {};
-      dayRecords.forEach((r) => {
-        weatherCounts[r.weather] = (weatherCounts[r.weather] ?? 0) + 1;
-      });
+      dayRecords.forEach((r) => { weatherCounts[r.weather] = (weatherCounts[r.weather] ?? 0) + 1; });
       const topWeather = Object.entries(weatherCounts).sort((a, b) => b[1] - a[1])[0][0];
 
       return {
         date,
         dateLabel: new Date(date + 'T12:00:00').toLocaleDateString(undefined, {
-          weekday: 'short',
-          day: 'numeric',
-          month: 'short',
+          weekday: 'short', day: 'numeric', month: 'short',
         }),
         sessions: dayRecords.length,
         avgIntensity: Math.round(avgIntensity * 10) / 10,
@@ -189,16 +209,14 @@ function buildDaySummaries(records: EmotionHistoryRecord[]): DaySummary[] {
         weatherEmoji: WEATHER_EMOJI[topWeather] ?? '🌤️',
         positiveCount: dayRecords.filter((r) => r.valence === 'positive').length,
         negativeCount: dayRecords.filter((r) => r.valence === 'negative').length,
-        records: dayRecords,
       };
     });
 }
 
 // ---------------------------------------------------------------------------
-// DailyTrendsTab — visual day-by-day emotion tracking
+// DailyTrendsTab
 // ---------------------------------------------------------------------------
-function DailyTrendsTab() {
-  const records: EmotionHistoryRecord[] = loadData().emotionHistory ?? [];
+function DailyTrendsTab({ records }: { records: EmotionHistoryRecord[] }) {
   const summaries = useMemo(() => buildDaySummaries(records), [records]);
 
   if (summaries.length === 0) {
@@ -210,24 +228,19 @@ function DailyTrendsTab() {
     );
   }
 
-  // Overall stats
   const totalSessions = records.length;
   const totalDays = summaries.length;
   const overallAvgIntensity =
     Math.round((records.reduce((s, r) => s + r.intensity, 0) / totalSessions) * 10) / 10;
 
-  // Most common emotion across all time
   const allEmotionCounts: Record<string, number> = {};
   records.forEach((r) => {
-    r.emotions.forEach((e) => {
-      allEmotionCounts[e] = (allEmotionCounts[e] ?? 0) + 1;
-    });
+    r.emotions.forEach((e) => { allEmotionCounts[e] = (allEmotionCounts[e] ?? 0) + 1; });
   });
   const sortedEmotions = Object.entries(allEmotionCounts).sort((a, b) => b[1] - a[1]);
 
   return (
     <div className={styles.trendsWrapper}>
-      {/* Quick stats */}
       <div className={styles.statsRow}>
         <div className={styles.statCard}>
           <span className={styles.statValue}>{totalSessions}</span>
@@ -243,7 +256,6 @@ function DailyTrendsTab() {
         </div>
       </div>
 
-      {/* Top emotions */}
       <div className={styles.sectionCard}>
         <p className={styles.sectionTitle}>Most common feelings</p>
         <div className={styles.emotionBarList}>
@@ -251,10 +263,7 @@ function DailyTrendsTab() {
             <div key={emotion} className={styles.emotionBarRow}>
               <span className={styles.emotionBarLabel}>{emotion}</span>
               <div className={styles.emotionBarTrack}>
-                <div
-                  className={styles.emotionBarFill}
-                  style={{ width: `${Math.round((count / totalSessions) * 100)}%` }}
-                />
+                <div className={styles.emotionBarFill} style={{ width: `${Math.round((count / totalSessions) * 100)}%` }} />
               </div>
               <span className={styles.emotionBarCount}>{count}</span>
             </div>
@@ -262,7 +271,6 @@ function DailyTrendsTab() {
         </div>
       </div>
 
-      {/* Day-by-day timeline */}
       <div className={styles.sectionCard}>
         <p className={styles.sectionTitle}>Day by day</p>
         <div className={styles.dayTimeline}>
@@ -270,9 +278,7 @@ function DailyTrendsTab() {
             <div key={day.date} className={styles.dayRow}>
               <div className={styles.dayMeta}>
                 <span className={styles.dayDate}>{day.dateLabel}</span>
-                <span className={styles.dayWeather} aria-label={day.topWeather}>
-                  {day.weatherEmoji}
-                </span>
+                <span className={styles.dayWeather} aria-label={day.topWeather}>{day.weatherEmoji}</span>
               </div>
               <div className={styles.dayContent}>
                 <div className={styles.intensityBar}>
@@ -286,13 +292,9 @@ function DailyTrendsTab() {
                 </div>
                 <div className={styles.dayDetails}>
                   <span className={styles.dayEmotion}>{day.topEmotion}</span>
-                  <span className={styles.daySessionCount}>
-                    {day.sessions} session{day.sessions !== 1 ? 's' : ''}
-                  </span>
+                  <span className={styles.daySessionCount}>{day.sessions} session{day.sessions !== 1 ? 's' : ''}</span>
                   {day.positiveCount > 0 && day.negativeCount > 0 && (
-                    <span className={styles.dayValenceSplit}>
-                      😊{day.positiveCount} · 😟{day.negativeCount}
-                    </span>
+                    <span className={styles.dayValenceSplit}>😊{day.positiveCount} · 😟{day.negativeCount}</span>
                   )}
                 </div>
               </div>
@@ -330,83 +332,114 @@ function GetHelpTab() {
 }
 
 // ---------------------------------------------------------------------------
-// ParentContent — tabbed view
+// ParentContent — tabbed view with profile selector
 // ---------------------------------------------------------------------------
 function ParentContent({ onBack }: { onBack: () => void }) {
-  const { clearAllData } = useApp();
-  const navigate = useNavigate();
+  const { profiles, removeProfile } = useProfile();
   const [tab, setTab] = useState<'trends' | 'history' | 'help'>('trends');
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(
+    profiles.length > 0 ? profiles[0].id : null
+  );
   const [showConfirm, setShowConfirm] = useState(false);
+  const navigate = useNavigate();
 
-  const handleClear = () => {
-    clearAllData();
-    navigate('/');
+  const records: EmotionHistoryRecord[] = useMemo(() => {
+    if (!selectedProfileId) return [];
+    return loadDataForProfile(selectedProfileId).emotionHistory ?? [];
+  }, [selectedProfileId]);
+
+  const selectedProfile = profiles.find((p) => p.id === selectedProfileId);
+
+  const handleClearData = () => {
+    if (!selectedProfileId) return;
+    clearDataForProfile(selectedProfileId);
+    setShowConfirm(false);
+    // Force re-render by toggling profile
+    setSelectedProfileId(null);
+    setTimeout(() => setSelectedProfileId(selectedProfileId), 0);
+  };
+
+  const handleDeleteProfile = () => {
+    if (!selectedProfileId) return;
+    deleteProfileFromStorage(selectedProfileId);
+    removeProfile(selectedProfileId);
+    const remaining = profiles.filter((p) => p.id !== selectedProfileId);
+    setSelectedProfileId(remaining.length > 0 ? remaining[0].id : null);
+    setShowConfirm(false);
   };
 
   return (
     <>
       <h1 className={styles.heading}>For Grown-Ups 💙</h1>
 
-      {/* Tabs */}
-      <div className={styles.tabs} role="tablist">
-        <button
-          role="tab"
-          type="button"
-          aria-selected={tab === 'trends'}
-          className={`${styles.tab} ${tab === 'trends' ? styles.tabActive : ''}`}
-          onClick={() => setTab('trends')}
-        >
-          📈 Trends
-        </button>
-        <button
-          role="tab"
-          type="button"
-          aria-selected={tab === 'history'}
-          className={`${styles.tab} ${tab === 'history' ? styles.tabActive : ''}`}
-          onClick={() => setTab('history')}
-        >
-          📊 History
-        </button>
-        <button
-          role="tab"
-          type="button"
-          aria-selected={tab === 'help'}
-          className={`${styles.tab} ${tab === 'help' ? styles.tabActive : ''}`}
-          onClick={() => setTab('help')}
-        >
-          💙 Get Help
-        </button>
-      </div>
+      {/* Profile selector */}
+      <ProfileSelector
+        profiles={profiles}
+        selectedId={selectedProfileId}
+        onSelect={setSelectedProfileId}
+      />
 
-      <div className={styles.tabContent}>
-        {tab === 'trends' && <DailyTrendsTab />}
-        {tab === 'history' && <EmotionHistoryTab />}
-        {tab === 'help' && <GetHelpTab />}
-      </div>
-
-      {showConfirm ? (
-        <div className={styles.confirmDialog} role="alertdialog" aria-labelledby="confirm-title">
-          <p id="confirm-title" className={styles.confirmMessage}>
-            Are you sure? This will delete all badges and session history.
-          </p>
-          <div className={styles.confirmActions}>
-            <button type="button" className={styles.destructiveButton} onClick={handleClear}>
-              Yes, delete everything
+      {selectedProfile && (
+        <>
+          {/* Tabs */}
+          <div className={styles.tabs} role="tablist">
+            <button
+              role="tab" type="button" aria-selected={tab === 'trends'}
+              className={`${styles.tab} ${tab === 'trends' ? styles.tabActive : ''}`}
+              onClick={() => setTab('trends')}
+            >
+              📈 Trends
             </button>
-            <button type="button" className={styles.backButton} onClick={() => setShowConfirm(false)}>
-              Cancel
+            <button
+              role="tab" type="button" aria-selected={tab === 'history'}
+              className={`${styles.tab} ${tab === 'history' ? styles.tabActive : ''}`}
+              onClick={() => setTab('history')}
+            >
+              📊 History
+            </button>
+            <button
+              role="tab" type="button" aria-selected={tab === 'help'}
+              className={`${styles.tab} ${tab === 'help' ? styles.tabActive : ''}`}
+              onClick={() => setTab('help')}
+            >
+              💙 Get Help
             </button>
           </div>
-        </div>
-      ) : (
-        <button type="button" className={styles.clearDataButton} onClick={() => setShowConfirm(true)}>
-          🗑️ Clear All Data
-        </button>
+
+          <div className={styles.tabContent}>
+            {tab === 'trends' && <DailyTrendsTab records={records} />}
+            {tab === 'history' && <EmotionHistoryTab records={records} />}
+            {tab === 'help' && <GetHelpTab />}
+          </div>
+
+          {showConfirm ? (
+            <div className={styles.confirmDialog} role="alertdialog" aria-labelledby="confirm-title">
+              <p id="confirm-title" className={styles.confirmMessage}>
+                What would you like to do with {selectedProfile.emoji} {selectedProfile.name}&apos;s data?
+              </p>
+              <div className={styles.confirmActions}>
+                <button type="button" className={styles.destructiveButton} onClick={handleClearData}>
+                  Clear history only
+                </button>
+                <button type="button" className={styles.destructiveButton} onClick={handleDeleteProfile}>
+                  Delete profile entirely
+                </button>
+                <button type="button" className={styles.backButton} onClick={() => setShowConfirm(false)}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button type="button" className={styles.clearDataButton} onClick={() => setShowConfirm(true)}>
+              🗑️ Manage {selectedProfile.name}&apos;s Data
+            </button>
+          )}
+        </>
       )}
 
       <div className={styles.actions}>
         <button type="button" className={styles.backButton} onClick={onBack}>
-          ← Back to Home
+          ← Back
         </button>
       </div>
     </>
@@ -423,11 +456,11 @@ export function ParentSafetySection() {
   return (
     <main className={styles.screen}>
       {confirmed ? (
-        <ParentContent onBack={() => navigate('/')} />
+        <ParentContent onBack={() => navigate('/profiles')} />
       ) : (
         <AdultConfirmGate
           onConfirm={() => setConfirmed(true)}
-          onBack={() => navigate('/')}
+          onBack={() => navigate('/profiles')}
         />
       )}
     </main>

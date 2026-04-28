@@ -613,3 +613,41 @@
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
 }
+
+/* ── Profile selector ── */
+.profileSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  width: 100%;
+  margin-bottom: var(--space-4);
+  justify-content: center;
+}
+
+.profileChip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  background-color: var(--color-surface);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  min-height: var(--touch-target);
+}
+
+.profileChip:hover {
+  border-color: var(--color-selected);
+}
+
+.profileChipActive {
+  background-color: var(--color-selected);
+  border-color: var(--color-selected);
+  color: #ffffff;
+}
