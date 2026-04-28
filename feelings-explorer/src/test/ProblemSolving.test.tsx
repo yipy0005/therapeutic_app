@@ -40,7 +40,7 @@ function baseSession(overrides: Partial<SessionState> = {}): SessionState {
     weatherMetaphor: 'stormy',
     bodyRegions: ['chest'],
     intensityLevel: 3,
-    selectedEmotion: 'Angry',
+    selectedEmotions: ['Angry'],
     calmToolsUsed: ['smell-flower'],
     reflectionResponses: {},
     nextStep: null,

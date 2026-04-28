@@ -63,25 +63,29 @@ function getEmoji(label: string): string {
 export function NameIt() {
   const { dispatch, sessionState } = useSession();
   const navigate = useNavigate();
-  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+  const [selectedEmotions, setSelectedEmotions] = useState<string[]>([]);
 
   const weather = sessionState.weatherMetaphor;
   const emotions = weather ? WEATHER_EMOTION_MAP[weather] : [];
 
   const handleCardTap = (emotion: string) => {
-    setSelectedEmotion((prev) => (prev === emotion ? null : emotion));
+    setSelectedEmotions((prev) =>
+      prev.includes(emotion) ? prev.filter((e) => e !== emotion) : [...prev, emotion]
+    );
   };
 
   const handleClear = () => {
-    setSelectedEmotion(null);
+    setSelectedEmotions([]);
   };
 
   const handleNext = () => {
-    if (!selectedEmotion || !weather) return;
+    if (selectedEmotions.length === 0 || !weather) return;
     const valence = POSITIVE_WEATHER.has(weather) ? 'positive' : 'negative';
-    dispatch({ type: 'SET_EMOTION', payload: { emotion: selectedEmotion, valence } });
+    dispatch({ type: 'SET_EMOTION', payload: { emotions: selectedEmotions, valence } });
     navigate(valence === 'positive' ? '/share' : '/calm-toolbox');
   };
+
+  const hasSelection = selectedEmotions.length > 0;
 
   return (
     <main className={styles.screen}>
@@ -93,7 +97,7 @@ export function NameIt() {
 
       <div className={styles.cardGrid} role="group" aria-label="Emotion word cards">
         {emotions.map((emotion) => {
-          const isSelected = selectedEmotion === emotion;
+          const isSelected = selectedEmotions.includes(emotion);
           return (
             <button
               key={emotion}
@@ -112,36 +116,38 @@ export function NameIt() {
         })}
       </div>
 
-      {selectedEmotion && (
+      {hasSelection && (
         <p className={styles.interpolatedPrompt}>
-          I wonder if you&apos;re feeling <strong>{selectedEmotion}</strong> because… Did I get
-          that right?
+          {selectedEmotions.length === 1
+            ? <>I wonder if you&apos;re feeling <strong>{selectedEmotions[0]}</strong> because… Did I get that right?</>
+            : <>It sounds like you&apos;re feeling <strong>{selectedEmotions.join(' and ')}</strong>. That&apos;s okay — feelings can mix together!</>
+          }
         </p>
       )}
 
-      {selectedEmotion && (
+      {hasSelection && (
         <div className={styles.parentScriptPanel}>
           <ParentScriptPanel weather={weather ?? undefined} />
         </div>
       )}
 
       <div className={styles.actions}>
-        {selectedEmotion && (
+        {hasSelection && (
           <button
             type="button"
             className={styles.clearButton}
             onClick={handleClear}
           >
-            No, it&apos;s more like…
+            Start over
           </button>
         )}
 
         <button
           type="button"
           className={styles.nextButton}
-          disabled={!selectedEmotion}
+          disabled={!hasSelection}
           onClick={handleNext}
-          aria-disabled={!selectedEmotion}
+          aria-disabled={!hasSelection}
         >
           Next →
         </button>

@@ -41,7 +41,7 @@ export interface SessionState {
   weatherMetaphor: WeatherMetaphor | null;
   bodyRegions: BodyRegion[];
   intensityLevel: 1 | 2 | 3 | 4 | 5 | null;
-  selectedEmotion: string | null;
+  selectedEmotions: string[];
   emotionValence: EmotionValence | null;
   calmToolsUsed: string[];
   reflectionResponses: Record<number, string[]>;
@@ -76,7 +76,7 @@ export interface EmotionHistoryRecord {
   date: string;         // ISO date string YYYY-MM-DD
   time: string;         // HH:MM
   weather: WeatherMetaphor;
-  emotion: string;
+  emotions: string[];
   valence: EmotionValence;
   intensity: 1 | 2 | 3 | 4 | 5;
   bodyRegions: BodyRegion[];

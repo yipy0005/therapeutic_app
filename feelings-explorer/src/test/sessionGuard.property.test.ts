@@ -35,7 +35,7 @@ const sessionStateArb: fc.Arbitrary<SessionState> = fc.record({
   weatherMetaphor: fc.oneof(fc.constant(null), weatherMetaphorArb),
   bodyRegions: fc.array(bodyRegionArb, { maxLength: 6 }),
   intensityLevel: intensityLevelArb,
-  selectedEmotion: fc.oneof(fc.constant(null), fc.string({ minLength: 1, maxLength: 50 })),
+  selectedEmotions: fc.array(fc.string({ minLength: 1, maxLength: 50 }), { maxLength: 4 }),
   calmToolsUsed: fc.array(fc.string({ minLength: 1, maxLength: 30 }), { maxLength: 10 }),
   reflectionResponses: fc.dictionary(
     fc.integer({ min: 0, max: 10 }).map(String),
@@ -59,7 +59,7 @@ function enrichState(state: SessionState): SessionState {
     bodyRegions: mergedRegions,
     weatherMetaphor: state.weatherMetaphor ?? 'sunny',
     intensityLevel: state.intensityLevel ?? 3,
-    selectedEmotion: state.selectedEmotion ?? 'Happy',
+    selectedEmotions: state.selectedEmotions.length > 0 ? state.selectedEmotions : ['Happy'],
     calmToolsUsed: state.calmToolsUsed.length > 0
       ? state.calmToolsUsed
       : [...state.calmToolsUsed, 'smell-flower'],

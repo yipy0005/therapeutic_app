@@ -20,7 +20,9 @@ export function Share() {
 
   const totalPrompts = POSITIVE_SHARE_PROMPTS.length;
   const currentPrompt = POSITIVE_SHARE_PROMPTS[promptIndex];
-  const emotion = sessionState.selectedEmotion ?? 'great';
+  const emotion = sessionState.selectedEmotions.length > 0
+    ? sessionState.selectedEmotions.join(' and ')
+    : 'great';
 
   const toggleOption = (label: string) => {
     setSelections((prev) =>

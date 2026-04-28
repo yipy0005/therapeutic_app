@@ -96,7 +96,7 @@ function EmotionHistoryTab() {
                   {WEATHER_EMOJI[r.weather] ?? '🌤️'}
                 </span>
                 <div className={styles.historyCardMain}>
-                  <span className={styles.historyEmotion}>{r.emotion}</span>
+                  <span className={styles.historyEmotion}>{r.emotions.join(', ')}</span>
                   <span className={styles.historyTime}>{r.time}</span>
                 </div>
                 <span
@@ -162,7 +162,9 @@ function buildDaySummaries(records: EmotionHistoryRecord[]): DaySummary[] {
       // Most frequent emotion
       const emotionCounts: Record<string, number> = {};
       dayRecords.forEach((r) => {
-        emotionCounts[r.emotion] = (emotionCounts[r.emotion] ?? 0) + 1;
+        r.emotions.forEach((e) => {
+          emotionCounts[e] = (emotionCounts[e] ?? 0) + 1;
+        });
       });
       const topEmotion = Object.entries(emotionCounts).sort((a, b) => b[1] - a[1])[0][0];
 
@@ -217,7 +219,9 @@ function DailyTrendsTab() {
   // Most common emotion across all time
   const allEmotionCounts: Record<string, number> = {};
   records.forEach((r) => {
-    allEmotionCounts[r.emotion] = (allEmotionCounts[r.emotion] ?? 0) + 1;
+    r.emotions.forEach((e) => {
+      allEmotionCounts[e] = (allEmotionCounts[e] ?? 0) + 1;
+    });
   });
   const sortedEmotions = Object.entries(allEmotionCounts).sort((a, b) => b[1] - a[1]);
 

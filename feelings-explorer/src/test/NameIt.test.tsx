@@ -40,7 +40,7 @@ function seedSunnySession() {
       weatherMetaphor: 'sunny',
       bodyRegions: [],
       intensityLevel: null,
-      selectedEmotion: null,
+      selectedEmotions: [],
       calmToolsUsed: [],
       reflectionResponses: {},
       nextStep: null,

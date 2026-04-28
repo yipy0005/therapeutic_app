@@ -59,7 +59,7 @@ function arbitraryCompletedSession(): fc.Arbitrary<SessionState> {
     weatherMetaphor: fc.oneof(fc.constant(null), weatherMetaphorArb),
     bodyRegions: fc.array(bodyRegionArb, { maxLength: 6 }),
     intensityLevel: intensityLevelArb,
-    selectedEmotion: fc.oneof(fc.constant(null), fc.string({ minLength: 1, maxLength: 50 })),
+    selectedEmotions: fc.array(fc.string({ minLength: 1, maxLength: 50 }), { maxLength: 4 }),
     calmToolsUsed: fc.array(calmToolIdArb, { maxLength: 11 }),
     reflectionResponses: reflectionResponsesArb,
     nextStep: nextStepArb,

@@ -9,7 +9,7 @@ export type SessionAction =
   | { type: 'SET_WEATHER'; payload: SessionState['weatherMetaphor'] }
   | { type: 'SET_BODY_REGIONS'; payload: SessionState['bodyRegions'] }
   | { type: 'SET_INTENSITY'; payload: SessionState['intensityLevel'] }
-  | { type: 'SET_EMOTION'; payload: { emotion: string; valence: SessionState['emotionValence'] } }
+  | { type: 'SET_EMOTION'; payload: { emotions: string[]; valence: SessionState['emotionValence'] } }
   | { type: 'ADD_CALM_TOOL'; payload: string }
   | { type: 'SET_REFLECTION'; payload: { index: number; responses: string[] } }
   | { type: 'SET_NEXT_STEP'; payload: string | null }
@@ -23,7 +23,7 @@ export const INITIAL_SESSION_STATE: SessionState = {
   weatherMetaphor: null,
   bodyRegions: [],
   intensityLevel: null,
-  selectedEmotion: null,
+  selectedEmotions: [],
   emotionValence: null,
   calmToolsUsed: [],
   reflectionResponses: {},
@@ -43,7 +43,7 @@ function sessionReducer(state: SessionState, action: SessionAction): SessionStat
     case 'SET_INTENSITY':
       return { ...state, intensityLevel: action.payload };
     case 'SET_EMOTION':
-      return { ...state, selectedEmotion: action.payload.emotion, emotionValence: action.payload.valence };
+      return { ...state, selectedEmotions: action.payload.emotions, emotionValence: action.payload.valence };
     case 'ADD_CALM_TOOL':
       if (state.calmToolsUsed.includes(action.payload)) return state;
       return { ...state, calmToolsUsed: [...state.calmToolsUsed, action.payload] };

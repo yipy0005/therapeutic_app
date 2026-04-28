@@ -222,7 +222,7 @@ export const CALM_TOOLS: Record<string, CalmTool> = {
 // Badge earning conditions
 // ---------------------------------------------------------------------------
 export const BADGE_CONDITIONS: Record<BadgeType, (session: SessionState) => boolean> = {
-  'feeling-detective': (s) => s.selectedEmotion !== null,
+  'feeling-detective': (s) => s.selectedEmotions.length > 0,
   'brave-breather': (s) =>
     s.calmToolsUsed.some((id) => CALM_TOOLS[id]?.category === 'breathing'),
   'repair-hero': (s) => s.nextStep === 'Repair / Say Sorry',

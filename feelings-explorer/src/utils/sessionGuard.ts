@@ -13,8 +13,8 @@ export function isStepUnlocked(step: SessionStep, session: SessionState): boolea
     case 'body-map':        return session.weatherMetaphor !== null;
     case 'intensity':       return session.bodyRegions.length >= 1;
     case 'name-it':         return session.intensityLevel !== null;
-    case 'share':           return session.selectedEmotion !== null && isPositive;
-    case 'calm-toolbox':    return session.selectedEmotion !== null && !isPositive;
+    case 'share':           return session.selectedEmotions.length > 0 && isPositive;
+    case 'calm-toolbox':    return session.selectedEmotions.length > 0 && !isPositive;
     case 'reflection':      return session.calmToolsUsed.length >= 1;
     case 'problem-solving': return true;
     case 'badge-screen':    return session.nextStep !== null;

@@ -6,7 +6,7 @@ const INITIAL_SESSION: SessionState = {
   weatherMetaphor: null,
   bodyRegions: [],
   intensityLevel: null,
-  selectedEmotion: null,
+  selectedEmotions: [],
   emotionValence: null,
   calmToolsUsed: [],
   reflectionResponses: {},

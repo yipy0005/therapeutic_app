@@ -15,7 +15,7 @@ function baseSession(overrides: Partial<SessionState> = {}): SessionState {
     weatherMetaphor: null,
     bodyRegions: [],
     intensityLevel: null,
-    selectedEmotion: null,
+    selectedEmotions: [],
     calmToolsUsed: [],
     reflectionResponses: {},
     nextStep: null,
@@ -33,13 +33,13 @@ describe('evaluateBadges', () => {
     expect(evaluateBadges(baseSession())).toEqual([]);
   });
 
-  it('awards feeling-detective when selectedEmotion is not null (Req 9.2)', () => {
-    const session = baseSession({ selectedEmotion: 'Angry' });
+  it('awards feeling-detective when selectedEmotions is not empty (Req 9.2)', () => {
+    const session = baseSession({ selectedEmotions: ['Angry'] });
     expect(evaluateBadges(session)).toContain('feeling-detective');
   });
 
-  it('does NOT award feeling-detective when selectedEmotion is null (Req 9.2)', () => {
-    const session = baseSession({ selectedEmotion: null });
+  it('does NOT award feeling-detective when selectedEmotions is empty (Req 9.2)', () => {
+    const session = baseSession({ selectedEmotions: [] });
     expect(evaluateBadges(session)).not.toContain('feeling-detective');
   });
 
@@ -108,7 +108,7 @@ describe('evaluateBadges', () => {
 
   it('returns multiple badges when multiple conditions are met (Req 9.2)', () => {
     const session = baseSession({
-      selectedEmotion: 'Angry',
+      selectedEmotions: ['Angry'],
       bodyRegions: ['chest'],
       calmToolsUsed: ['smell-flower'],
       nextStep: 'Try Again',
@@ -124,7 +124,7 @@ describe('evaluateBadges', () => {
     // repair-hero and try-again-star are mutually exclusive (both depend on nextStep),
     // so the maximum achievable in one session is 5 badges when nextStep is 'Repair / Say Sorry'
     const session = baseSession({
-      selectedEmotion: 'Happy',
+      selectedEmotions: ['Happy'],
       bodyRegions: ['tummy'],
       calmToolsUsed: ['smell-flower', 'need-help'],
       nextStep: 'Repair / Say Sorry',
@@ -140,7 +140,7 @@ describe('evaluateBadges', () => {
 
   it('returns results in sorted order (Req 9.1)', () => {
     const session = baseSession({
-      selectedEmotion: 'Happy',
+      selectedEmotions: ['Happy'],
       bodyRegions: ['tummy'],
       calmToolsUsed: ['smell-flower', 'need-help'],
       nextStep: 'Try Again',

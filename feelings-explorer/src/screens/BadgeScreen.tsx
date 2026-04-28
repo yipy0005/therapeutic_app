@@ -52,14 +52,14 @@ export function BadgeScreen() {
     });
 
     // Save this session to emotion history
-    if (sessionState.weatherMetaphor && sessionState.selectedEmotion && sessionState.intensityLevel) {
+    if (sessionState.weatherMetaphor && sessionState.selectedEmotions.length > 0 && sessionState.intensityLevel) {
       const now = new Date();
       saveEmotionRecord({
         id: now.getTime().toString(),
         date: now.toISOString().slice(0, 10),
         time: now.toTimeString().slice(0, 5),
         weather: sessionState.weatherMetaphor,
-        emotion: sessionState.selectedEmotion,
+        emotions: sessionState.selectedEmotions,
         valence: sessionState.emotionValence ?? 'negative',
         intensity: sessionState.intensityLevel,
         bodyRegions: sessionState.bodyRegions,
