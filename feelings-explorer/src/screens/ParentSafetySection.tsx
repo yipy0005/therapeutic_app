@@ -307,9 +307,7 @@ function DailyTrendsTab() {
 // ---------------------------------------------------------------------------
 // GetHelpTab
 // ---------------------------------------------------------------------------
-function GetHelpTab({ onClear }: { onClear: () => void }) {
-  const [showConfirm, setShowConfirm] = useState(false);
-
+function GetHelpTab() {
   return (
     <>
       <p className={styles.disclaimer}>
@@ -327,26 +325,6 @@ function GetHelpTab({ onClear }: { onClear: () => void }) {
           </li>
         ))}
       </ul>
-
-      {showConfirm ? (
-        <div className={styles.confirmDialog} role="alertdialog" aria-labelledby="confirm-title">
-          <p id="confirm-title" className={styles.confirmMessage}>
-            Are you sure? This will delete all badges and session history.
-          </p>
-          <div className={styles.confirmActions}>
-            <button type="button" className={styles.destructiveButton} onClick={onClear}>
-              Yes, delete everything
-            </button>
-            <button type="button" className={styles.backButton} onClick={() => setShowConfirm(false)}>
-              Cancel
-            </button>
-          </div>
-        </div>
-      ) : (
-        <button type="button" className={styles.clearDataButton} onClick={() => setShowConfirm(true)}>
-          🗑️ Clear All Data
-        </button>
-      )}
     </>
   );
 }
@@ -358,6 +336,7 @@ function ParentContent({ onBack }: { onBack: () => void }) {
   const { clearAllData } = useApp();
   const navigate = useNavigate();
   const [tab, setTab] = useState<'trends' | 'history' | 'help'>('trends');
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleClear = () => {
     clearAllData();
@@ -402,8 +381,28 @@ function ParentContent({ onBack }: { onBack: () => void }) {
       <div className={styles.tabContent}>
         {tab === 'trends' && <DailyTrendsTab />}
         {tab === 'history' && <EmotionHistoryTab />}
-        {tab === 'help' && <GetHelpTab onClear={handleClear} />}
+        {tab === 'help' && <GetHelpTab />}
       </div>
+
+      {showConfirm ? (
+        <div className={styles.confirmDialog} role="alertdialog" aria-labelledby="confirm-title">
+          <p id="confirm-title" className={styles.confirmMessage}>
+            Are you sure? This will delete all badges and session history.
+          </p>
+          <div className={styles.confirmActions}>
+            <button type="button" className={styles.destructiveButton} onClick={handleClear}>
+              Yes, delete everything
+            </button>
+            <button type="button" className={styles.backButton} onClick={() => setShowConfirm(false)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button type="button" className={styles.clearDataButton} onClick={() => setShowConfirm(true)}>
+          🗑️ Clear All Data
+        </button>
+      )}
 
       <div className={styles.actions}>
         <button type="button" className={styles.backButton} onClick={onBack}>
